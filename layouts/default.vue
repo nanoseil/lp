@@ -62,8 +62,8 @@ const transition: TransitionProps = {
               </nuxt-link>
             </div>
             <v-divider vertical class="mx-4" />
-            <nuxt-link custom to="/youtube" v-slot="{ navigate }">
-              <v-btn @click="navigate" variant="text" href="/youtube" disabled
+            <nuxt-link custom to="/" v-slot="{ navigate }">
+              <v-btn @click="navigate" variant="text" href="/" disabled
                 >Nanostream</v-btn
               >
             </nuxt-link>
