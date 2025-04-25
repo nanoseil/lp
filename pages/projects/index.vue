@@ -1,4 +1,8 @@
 <script setup lang="ts">
+useHead({
+  title: "Projects",
+});
+
 type Project = {
   title: string;
   tags: string[];
@@ -8,17 +12,17 @@ type Project = {
 const projects = [
   {
     title: "Hikari",
-    tags: ["Compute"],
+    tags: ["Compute", "AI"],
     description: "Competitive Tetris Bot",
   },
   {
     title: "Crocotile",
-    tags: ["Haptics"],
+    tags: ["Haptics", "Hardware"],
     description: "2D Force-Feedback Trackball",
   },
   {
     title: "Tangiblr",
-    tags: ["Haptics"],
+    tags: ["Haptics", "App"],
     description: "Tangible Social Media",
   },
   {

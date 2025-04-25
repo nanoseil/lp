@@ -41,6 +41,26 @@ export default defineNuxtConfig({
           href: "https://use.typekit.net/qys6mzt.css",
           tagPosition: "bodyOpen",
         },
+        // favicon
+        {
+          rel: "icon",
+          type: "image/x-icon",
+          href: "/favicon.ico",
+          sizes: "any",
+        },
+        {
+          rel: "icon",
+          type: "image/svg+xml",
+          href: "/logo.svg",
+        },
+        {
+          rel: "apple-touch-icon",
+          href: "/apple-touch-icon.png",
+        },
+        {
+          rel: "manifest",
+          href: "/manifest.webmanifest",
+        },
       ],
     },
   },

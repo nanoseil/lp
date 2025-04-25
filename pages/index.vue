@@ -35,9 +35,7 @@ import Logo from "~/public/logo.svg";
               </h2>
             </v-col>
             <v-col cols="12" md="7">
-              <h4 class="text-h4 mb-4">
-                Deliver the edge innovation in your daily life.
-              </h4>
+              <h4 class="text-h4 mb-4">Edge innovations, in our hands.</h4>
               <p class="text-body">
                 We are a team of passionate individuals dedicated to pushing the
                 boundaries of technology and creativity. Our mission is to
@@ -71,8 +69,9 @@ import Logo from "~/public/logo.svg";
                 @click="navigate"
                 class="text-h4 font-weight-light tk-gravesend-sans"
                 variant="text"
+                href="/projects"
               >
-                More ->
+                More <span aria-hidden="true">-></span>
               </v-btn>
             </nuxt-link>
           </div>
