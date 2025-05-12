@@ -22,7 +22,7 @@ import Logo from "~/public/logo.svg";
           </h3>
         </v-container>
       </v-sheet>
-      <v-sheet color="blue-grey-lighten-5" class="py-8">
+      <v-sheet color="dim" class="py-8">
         <v-container>
           <v-row>
             <v-col cols="12" md="5" class="d-flex align-center">
@@ -61,7 +61,7 @@ import Logo from "~/public/logo.svg";
           </v-row>
         </v-container>
       </v-sheet>
-      <v-sheet color="main" class="py-8">
+      <v-sheet color="dim" class="py-8">
         <v-container>
           <div class="d-flex justify-end">
             <nuxt-link custom to="/projects" v-slot="{ navigate }">

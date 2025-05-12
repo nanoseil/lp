@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { TransitionProps } from "vue";
+import { useTheme } from "vuetify";
 import Logo from "~/public/logo.svg";
+import { ref, onMounted, onBeforeUnmount, watch } from "vue";
 
 definePageMeta({
   layout: "default",
@@ -25,6 +27,74 @@ const transition: TransitionProps = {
     done();
   },
 };
+
+const { global: theme } = useTheme();
+
+// Add themeMode ref to track current theme preference
+const themeMode = ref<"light" | "dark" | "auto">("auto");
+
+// Function to detect OS dark mode preference
+const isDarkMode = () =>
+  window.matchMedia &&
+  window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+// Function to set theme based on current mode
+const applyTheme = () => {
+  if (themeMode.value === "auto") {
+    theme.name.value = isDarkMode() ? "dark" : "light";
+  } else {
+    theme.name.value = themeMode.value;
+  }
+};
+
+// Function to cycle through theme options
+function toggleTheme() {
+  if (themeMode.value === "light") {
+    themeMode.value = "dark";
+  } else if (themeMode.value === "dark") {
+    themeMode.value = "auto";
+  } else {
+    themeMode.value = "light";
+  }
+  applyTheme();
+}
+
+// Media query for detecting OS theme changes
+let darkModeMediaQuery: MediaQueryList | null = null;
+
+// Handle OS theme change when in auto mode
+const handleOSThemeChange = (e: MediaQueryListEvent) => {
+  if (themeMode.value === "auto") {
+    theme.name.value = e.matches ? "dark" : "light";
+  }
+};
+
+onMounted(() => {
+  // Initialize theme mode from localStorage or default to 'auto'
+  const savedTheme = localStorage.getItem("themeMode");
+  if (savedTheme && ["light", "dark", "auto"].includes(savedTheme)) {
+    themeMode.value = savedTheme as "light" | "dark" | "auto";
+  }
+
+  // Set up media query listener for OS theme changes
+  darkModeMediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+  darkModeMediaQuery.addEventListener("change", handleOSThemeChange);
+
+  // Apply initial theme
+  applyTheme();
+});
+
+// Save theme preference when it changes
+watch(themeMode, (newValue) => {
+  localStorage.setItem("themeMode", newValue);
+});
+
+onBeforeUnmount(() => {
+  // Clean up media query listener
+  if (darkModeMediaQuery) {
+    darkModeMediaQuery.removeEventListener("change", handleOSThemeChange);
+  }
+});
 </script>
 
 <template>
@@ -67,6 +137,19 @@ const transition: TransitionProps = {
                 >Nanostream</v-btn
               >
             </nuxt-link>
+            <v-btn
+              @click="toggleTheme"
+              icon
+              :title="`Current theme: ${themeMode}`"
+            >
+              <v-icon>{{
+                themeMode === "auto"
+                  ? "mdi-theme-light-dark"
+                  : themeMode === "light"
+                  ? "mdi-weather-night"
+                  : "mdi-white-balance-sunny"
+              }}</v-icon>
+            </v-btn>
           </v-col>
         </v-row>
       </v-app-bar>
