@@ -45,6 +45,11 @@ const projects = [
     tags: ["AI"],
     description: "Graph-AI codegen",
   },
+  {
+    title: "Nanostudio",
+    tags: ["AI", "Platform", "Deployment"],
+    description: "A self-contained AI development environment",
+  },
 ] as const satisfies Project[];
 </script>
 
