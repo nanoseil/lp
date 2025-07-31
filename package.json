@@ -18,6 +18,7 @@
     "@nuxt/content": "^3.5.1",
     "@nuxt/image": "^1.10.0",
     "@nuxtjs/i18n": "^9.5.3",
+    "better-sqlite3": "^12.2.0",
     "nuxt": "^3.16.2",
     "vite-svg-loader": "^5.1.0",
     "vue": "latest",
