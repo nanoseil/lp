@@ -1,8 +1,12 @@
 <script setup lang="ts">
 const route = useRoute()
-const { data: post } = await useAsyncData(`blog-${route.params.slug}`, () =>
-  queryContent(route.path).findOne()
-)
+
+// Use API to fetch the specific blog post
+const { data: blogData } = await useFetch('/api/blog')
+const post = computed(() => {
+  if (!blogData.value?.posts) return null
+  return blogData.value.posts.find(p => p._path === route.path)
+})
 
 if (!post.value) {
   throw createError({
@@ -77,7 +81,7 @@ useSeoMeta({
           <!-- Article Content -->
           <v-card variant="outlined" class="pa-6">
             <div class="prose">
-              <ContentRenderer :value="post" />
+              <div v-html="post.body?.replace(/\\n/g, '<br>').replace(/^# /gm, '<h1>').replace(/^## /gm, '<h2>').replace(/^### /gm, '<h3>').replace(/- \*\*(.*?)\*\*:/g, '<li><strong>$1</strong>:</li>')"></div>
             </div>
           </v-card>
         </article>

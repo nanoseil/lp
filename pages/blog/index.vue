@@ -1,23 +1,13 @@
 <script setup lang="ts">
-// Simple approach - use the global queryContent composable
-const { data: contentData } = await useAsyncData('blog-content', async () => {
-  // Use server-side only content fetching  
-  if (process.server) {
-    try {
-      // Try using the global queryContent composable
-      const content = await queryContent().find()
-      return content
-    } catch (error) {
-      console.error('Error querying content:', error)
-      return []
-    }
-  }
-  return []
-})
+// Use server API to fetch blog posts
+const { data: blogData } = await useFetch('/api/blog')
 
-// Filter only blog posts
+// Extract posts from the API response
+const allPosts = computed(() => blogData.value?.posts || [])
+
+// Filter only blog posts (additional safety)
 const blogPosts = computed(() => {
-  return contentData.value?.filter(post => 
+  return allPosts.value?.filter(post => 
     post._path?.includes('/blog/') || post._path?.includes('test-blog')
   ) || []
 })
@@ -137,14 +127,6 @@ const formatDate = (dateString: string) => {
             </v-card>
           </v-col>
         </v-row>
-
-        <!-- Debug info -->
-        <div v-if="contentData" class="mt-4 pa-4" style="background: #f5f5f5; border-radius: 8px;">
-          <h4>Debug: Total posts found: {{ contentData.length }}</h4>
-          <h4>Blog posts: {{ blogPosts.length }}</h4>
-          <h4>Filtered posts: {{ filteredPosts.length }}</h4>
-          <pre>{{ JSON.stringify(contentData.map(p => ({ path: p._path, title: p.title, category: p.category })), null, 2) }}</pre>
-        </div>
 
         <!-- Empty State -->
         <div v-if="filteredPosts.length === 0" class="text-center py-8">

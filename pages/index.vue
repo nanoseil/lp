@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import Logo from "~/public/logo.svg";
 
-// Fetch latest 3 blog posts
-const { data: latestPosts } = await useAsyncData('latest-blog-posts', () =>
-  queryContent()
-    .where({ _path: { $regex: '/blog/' } })
-    .sort({ publishedAt: -1 })
-    .limit(3)
-    .find()
-)
+// Fetch latest 3 blog posts via API
+const { data: blogData } = await useFetch('/api/blog')
+const latestPosts = computed(() => {
+  const posts = blogData.value?.posts || []
+  return posts
+    .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
+    .slice(0, 3)
+})
 
 const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString('ja-JP', {
