@@ -1,5 +1,21 @@
 <script setup lang="ts">
 import Logo from "~/public/logo.svg";
+
+// Fetch latest 3 blog posts via API
+const { data: blogData } = await useFetch('/api/blog')
+const latestPosts = computed(() => {
+  const posts = blogData.value?.posts || []
+  return posts
+    .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
+    .slice(0, 3)
+})
+
+const formatDate = (dateString: string) => {
+  return new Date(dateString).toLocaleDateString('ja-JP', {
+    month: 'short',
+    day: 'numeric'
+  })
+}
 </script>
 
 <template>
@@ -61,17 +77,71 @@ import Logo from "~/public/logo.svg";
           </v-row>
         </v-container>
       </v-sheet>
+      <v-sheet color="background" class="py-8">
+        <v-container>
+          <v-row>
+            <v-col cols="12" md="5" class="d-flex align-center">
+              <h2
+                class="text-h2 pb-4 border-b tk-gravesend-sans flex-grow-1 text-main"
+              >
+                <span class="text-acc1">B</span>lo<span class="text-acc2">g</span>
+              </h2>
+            </v-col>
+            <v-col cols="12" md="7">
+              <div class="d-flex flex-column gap-4">
+                <div
+                  v-for="post in latestPosts"
+                  :key="post._path"
+                  class="d-flex align-center"
+                >
+                  <nuxt-link
+                    :to="post._path"
+                    class="text-decoration-none flex-grow-1"
+                  >
+                    <v-card
+                      variant="outlined"
+                      hover
+                      class="pa-4"
+                    >
+                      <div class="d-flex align-center mb-2">
+                        <v-chip
+                          :color="
+                            post.category === 'news' ? 'primary' :
+                            post.category === 'misc' ? 'secondary' : 'accent'
+                          "
+                          size="x-small"
+                          variant="outlined"
+                        >
+                          {{ post.category }}
+                        </v-chip>
+                        <v-spacer />
+                        <span class="text-caption text-medium-emphasis">
+                          {{ formatDate(post.publishedAt) }}
+                        </span>
+                      </div>
+                      <h4 class="text-subtitle-1 mb-1">{{ post.title }}</h4>
+                      <p class="text-body-2 text-medium-emphasis">
+                        {{ post.description }}
+                      </p>
+                    </v-card>
+                  </nuxt-link>
+                </div>
+              </div>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-sheet>
       <v-sheet color="dim" class="py-8">
         <v-container>
           <div class="d-flex justify-end">
-            <nuxt-link custom to="/projects" v-slot="{ navigate }">
+            <nuxt-link custom to="/blog" v-slot="{ navigate }">
               <v-btn
                 @click="navigate"
                 class="text-h4 font-weight-light tk-gravesend-sans"
                 variant="text"
-                href="/projects"
+                href="/blog"
               >
-                More <span aria-hidden="true">-></span>
+                More Posts <span aria-hidden="true">-></span>
               </v-btn>
             </nuxt-link>
           </div>
