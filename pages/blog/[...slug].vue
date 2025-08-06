@@ -160,14 +160,14 @@ useSeoMeta({
   :deep(code) {
     background-color: rgb(var(--v-theme-surface-variant));
     padding: 0.125rem 0.25rem;
-    border-radius: 0.25rem;
+    border-radius: 0;
     font-size: 0.875rem;
   }
   
   :deep(pre) {
     background-color: rgb(var(--v-theme-surface-variant));
     padding: 1rem;
-    border-radius: 0.5rem;
+    border-radius: 0;
     overflow-x: auto;
     margin: 1rem 0;
     

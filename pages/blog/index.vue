@@ -145,6 +145,6 @@ const formatDate = (dateString: string) => {
 
 <style scoped lang="scss">
 .v-btn-toggle {
-  border-radius: 8px;
+  border-radius: 0;
 }
 </style>
